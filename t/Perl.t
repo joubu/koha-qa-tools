@@ -1,8 +1,7 @@
 use Modern::Perl;
-use Test::More;
+use Test::More tests => 37;
 
 use File::chdir;
-use Cwd qw/getcwd/;
 use Git::Repository;
 use QohA::Git;
 use QohA::Files;
@@ -212,8 +211,6 @@ if ($@) {
 
 $CWD = $cwd_bak;
 system( qq{ rm -Rf $git_repo } );
-
-done_testing;
 
 sub test_report {
     my ($param) = @_;

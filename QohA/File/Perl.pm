@@ -10,12 +10,13 @@ extends 'QohA::File';
 use Test::Perl::Critic::Progressive(':all');
 use Perl::Critic qw[critique];
 use IPC::Cmd qw[can_run run];
+use Cwd qw( abs_path );
 
 use QohA::Git;
 use QohA::Report;
 
 
-our $pc_rc =  dirname( $INC{'QohA/File/Perl.pm'} ) . '/../../perlcriticrc';
+our $pc_rc =  dirname( abs_path( $INC{'QohA/File/Perl.pm'} ) ) . '/../../perlcriticrc';
 die "Koha's $pc_rc file is missing..." unless  ( -e  $pc_rc );
 
 has 'pass' => (
