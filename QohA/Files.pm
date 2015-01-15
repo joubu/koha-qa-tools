@@ -9,6 +9,7 @@ use QohA::File::Perl;
 use QohA::File::Template;
 use QohA::File::YAML;
 use QohA::File::Specific::Sysprefs;
+use QohA::File::Specific::Kohastructure;
 
 has 'files' => (
     is => 'rw',
@@ -30,6 +31,8 @@ sub BUILD {
             if $file =~ qr/\.yml$|\.yaml$/i;
         push @{ $self->files }, QohA::File::Specific::Sysprefs->new(path => $file)
             if $file =~ qr/sysprefs\.sql$/;
+        push @{ $self->files }, QohA::File::Specific::Kohastructure->new(path => $file)
+            if $file =~ qr/kohastructure\.sql$/;
     }
 }
 

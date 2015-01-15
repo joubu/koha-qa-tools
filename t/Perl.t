@@ -47,7 +47,8 @@ eval {
 
     my @files = (
         $modified_files->filter( { extension => [ qw< perl tt xml yaml > ] } ),
-        $modified_files->filter( { name => [ qw< sysprefs.sql > ] } )
+        $modified_files->filter( { name => [ qw< sysprefs.sql > ] } ),
+        $modified_files->filter( { name => [ qw< kohastructure.sql > ] } ),
     );
     for my $f ( @files ) {
         $f->run_checks();
@@ -104,6 +105,7 @@ eval {
  $STATUS_OK	tmpl/i_will_be_correct_tt_valid.tt
  $STATUS_KO	i_fail_yaml.yaml
  $STATUS_KO	sql/sysprefs.sql
+ $STATUS_KO	sql/kohastructure.sql
 EOL
     my $r_v1_expected = <<EOL;
  $STATUS_KO	perl/i_fail_license.pl
@@ -177,6 +179,9 @@ EOL
 
  $STATUS_KO	sql/sysprefs.sql
    $STATUS_KO	  sysprefs_order
+
+ $STATUS_KO	sql/kohastructure.sql
+   $STATUS_KO	  charset_collate
 
 EOL
 

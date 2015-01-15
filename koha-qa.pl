@@ -61,7 +61,8 @@ eval {
 
     my @files = (
         $modified_files->filter( { extension => [ qw< perl tt xml yaml > ] } ),
-        $modified_files->filter( { name => [ qw< sysprefs.sql > ] } )
+        $modified_files->filter( { name => [ qw< sysprefs.sql > ] } ),
+        $modified_files->filter( { name => [ qw< kohastructure.sql > ] } ),
     );
 
 
