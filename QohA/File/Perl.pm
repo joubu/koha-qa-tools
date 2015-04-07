@@ -165,6 +165,8 @@ sub check_forbidden_patterns {
         {pattern => qr{wthdrawn}, error => "wthdrawn should be replaced by withdrawn (see bug 10550)"},
         {pattern => qr{template_name\s*=>.*\.tmpl}, error => "You should not use a .tmpl extension for the template name (see bug 11349)"},
     );
+    push @forbidden_patterns, {pattern => qr{insert\s+into\s+`?systempreferences}i, error => "Use INSERT IGNORE INTO on inserting a new syspref (see bug 9071)"}
+        if $self->filename eq 'updatedatabase.pl';
 
     return $self->SUPER::check_forbidden_patterns($cnt, \@forbidden_patterns);
 }

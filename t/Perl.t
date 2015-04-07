@@ -93,6 +93,7 @@ eval {
     my $r_v0_expected = <<EOL;
  $STATUS_KO	perl/i_fail_license.pl
  $STATUS_KO	perl/i_fail_template_name.pl
+ $STATUS_KO	perl/updatedatabase.pl
  $STATUS_KO	perl/i_fail_patterns.pl
  $STATUS_KO	perl/i_fail_compil.pl
  $STATUS_KO	perl/i_fail_critic.pl
@@ -115,6 +116,12 @@ EOL
    $STATUS_OK	  valid
 
  $STATUS_KO	perl/i_fail_template_name.pl
+   $STATUS_OK	  critic
+   $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_OK	  valid
+
+ $STATUS_KO	perl/updatedatabase.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
    $STATUS_OK	  pod
