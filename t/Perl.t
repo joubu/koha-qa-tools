@@ -92,6 +92,7 @@ eval {
     our $STATUS_OK = "${GREEN}OK${END}";
     my $r_v0_expected = <<EOL;
  $STATUS_KO	perl/i_fail_license.pl
+ $STATUS_KO	perl/i_fail_spelling.pl
  $STATUS_KO	perl/i_fail_template_name.pl
  $STATUS_KO	perl/updatedatabase.pl
  $STATUS_KO	perl/i_fail_patterns.pl
@@ -113,71 +114,91 @@ EOL
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
    $STATUS_OK	  pod
+   $STATUS_OK	  spelling
+   $STATUS_OK	  valid
+
+ $STATUS_KO	perl/i_fail_spelling.pl
+   $STATUS_OK	  critic
+   $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_KO	  spelling
    $STATUS_OK	  valid
 
  $STATUS_KO	perl/i_fail_template_name.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
    $STATUS_OK	  pod
+   $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
  $STATUS_KO	perl/updatedatabase.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
    $STATUS_OK	  pod
+   $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
  $STATUS_KO	perl/i_fail_patterns.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
    $STATUS_OK	  pod
+   $STATUS_OK	  spelling
    $STATUS_KO	  valid
 
  $STATUS_KO	perl/i_fail_compil.pl
    $STATUS_OK	  critic
    $STATUS_OK	  forbidden patterns
    $STATUS_OK	  pod
+   $STATUS_OK	  spelling
    $STATUS_KO	  valid
 
  $STATUS_KO	perl/i_fail_critic.pl
    $STATUS_KO	  critic
    $STATUS_OK	  forbidden patterns
    $STATUS_OK	  pod
+   $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
  $STATUS_OK	perl/i_m_ok.pl
    $STATUS_OK	  critic
    $STATUS_OK	  forbidden patterns
    $STATUS_OK	  pod
+   $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
  $STATUS_KO	tmpl/i_fail_patterns_theme.tt
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_patterns_tt_plugins.tt
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_KO	  valid_template
 
  $STATUS_KO	tmpl/i_fail_patterns.tt
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_tt_valid.tt
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  spelling
    $STATUS_KO	  tt_valid
    $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_valid_template.tt
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_KO	  valid_template
 
  $STATUS_OK	tmpl/i_will_be_correct_tt_valid.tt
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_OK	  valid_template
 

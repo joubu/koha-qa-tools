@@ -40,6 +40,9 @@ sub run_checks {
         $self->SUPER::add_to_report('forbidden patterns', $r);
     }
 
+    $r = $self->check_spelling();
+    $self->SUPER::add_to_report('spelling', $r);
+
     $self->pass($self->pass + 1);
 }
 

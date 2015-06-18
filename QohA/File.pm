@@ -4,6 +4,7 @@ use Modern::Perl;
 use Moo;
 use File::Basename;
 use Cwd 'abs_path';
+use IPC::Cmd qw( run );
 
 has 'path' => (
     is => 'ro',
@@ -66,6 +67,33 @@ sub check_forbidden_patterns {
     return @errors
         ? \@errors
         : 1;
+}
+
+sub check_spelling {
+    my ($self) = @_;
+
+    my $cmd = q{codespell -d } . $self->path;
+    my ( $success, $error_code, $full_buf, $stdout_buf, $stderr_buf ) = run( command => $cmd, verbose => 0 );
+
+    return 0 unless @$full_buf;
+
+    # Encapsulate the potential errors
+    my @errors;
+    my @lines = split /\n/, $full_buf->[0];
+    for my $line (@lines) {
+        chomp $line;
+
+        # Remove filepath and line numbers
+        # my/file/path:xxx: indentifier  ==> identifier
+        my $re = q|^| . $self->path . q|:\d+:|;
+        $line =~ s|$re||;
+
+        push @errors, $line;
+    }
+
+    return @errors
+      ? \@errors
+      : 1;
 }
 
 sub add_to_report {

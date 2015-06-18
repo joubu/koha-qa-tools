@@ -53,6 +53,10 @@ sub run_checks {
     # Check patterns
     $r = $self->check_forbidden_patterns($cnt);
     $self->SUPER::add_to_report('forbidden patterns', $r);
+
+    # Check spelling
+    $r = $self->check_spelling();
+    $self->SUPER::add_to_report('spelling', $r);
 }
 
 sub check_critic {

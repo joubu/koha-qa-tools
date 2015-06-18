@@ -37,6 +37,11 @@ BEGIN {
       if $@;
 }
 
+# Assuming codespell is in /usr/bin
+unless ( -f '/usr/bin/codespell' ) {
+    die "You should install codespell\n";
+}
+
 $c = 1 unless $c;
 my $num_of_commits = $c;
 
