@@ -37,9 +37,11 @@ BEGIN {
       if $@;
 }
 
+our @tests_to_skip = ();
 # Assuming codespell is in /usr/bin
 unless ( -f '/usr/bin/codespell' ) {
-    die "You should install codespell\n";
+    warn "You should install codespell\n";
+    push @tests_to_skip, 'spelling';
 }
 
 $c = 1 unless $c;
@@ -52,7 +54,7 @@ if ( @{$git->diff_log} ) {
 }
 
 our $branch = $git->branchname;
-my ( $new_fails, $already_fails, $skip, $error_code, $full ) = 0;
+my ( $new_fails, $already_fails, $error_code, $full ) = 0;
 
 eval {
 
@@ -95,8 +97,14 @@ eval {
     }
     say "\n" unless $no_progress;
 
-    for my $f ( @files ) {
-        say $f->report->to_string({ verbosity => $v, color => not $nocolor });
+    for my $f (@files) {
+        say $f->report->to_string(
+            {
+                verbosity => $v,
+                color     => not( $nocolor ),
+                skip      => \@tests_to_skip,
+            }
+        );
     }
 };
 

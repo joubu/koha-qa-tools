@@ -16,9 +16,10 @@ has 'tasks' => (
 );
 
 # Global vars
-my $RED = "\e[1;31m";
-my $GREEN = "\e[1;32m";
-my $END = "\e[0m";
+our $RED    = "\e[1;31m";
+our $GREEN  = "\e[1;32m";
+our $ORANGE = "\e[1;33m";
+our $END    = "\e[0m";
 
 sub add {
     my ($self, $param) = @_;
@@ -36,6 +37,7 @@ sub to_string {
     my $verbosity = $params->{verbosity} // 0;
     my $color     = $params->{color} // 1;
     my $task_name = $params->{name};
+    my $skip      = $params->{skip} // [];
 
     my $STATUS_KO = $color
         ? "${RED}FAIL${END}"
@@ -43,6 +45,9 @@ sub to_string {
     my $STATUS_OK = $color
         ? "${GREEN}OK${END}"
         : "OK";
+    my $STATUS_SKIPPED = $color
+        ? "${ORANGE}SKIP${END}"
+        : "SKIP";
 
     my $tasks = $self->tasks;
     if ( defined $task_name ) {
@@ -55,6 +60,10 @@ sub to_string {
 
 
     for my $name ( sort keys %$tasks ) {
+        if ( grep {/^$name$/} @$skip ) {
+            $v1 .= "\n   " . $STATUS_SKIPPED ."\t  $name";
+            next;
+        }
         my $results = $tasks->{$name};
         my @diff = $self->diff($results);
 
