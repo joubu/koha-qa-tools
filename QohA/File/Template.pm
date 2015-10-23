@@ -12,11 +12,6 @@ use QohA::Report;
 use C4::TTParser;
 use Template;
 
-has 'pass' => (
-    is => 'rw',
-    default => sub{1},
-);
-
 has 'report' => (
     is => 'rw',
     default => sub {
@@ -33,7 +28,7 @@ sub run_checks {
     $r = $self->check_valid_template();
     $self->SUPER::add_to_report('valid_template', $r);
 
-    if ( $self->pass == 1 ) {
+    if ( $self->pass == 0 ) {
         $self->SUPER::add_to_report('forbidden patterns', '');
     } else {
         $r = $self->check_forbidden_patterns($cnt);

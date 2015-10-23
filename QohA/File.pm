@@ -20,10 +20,13 @@ has 'abspath' => (
     lazy => 1,
     builder => '_build_abspath',
 );
-
 has 'new_file' => (
     is => 'rw',
     default => sub {0},
+);
+has 'pass' => (
+    is => 'rw',
+    default => sub{0},
 );
 
 sub _build_filename {
@@ -41,7 +44,7 @@ sub check_forbidden_patterns {
     my ($self, $cnt, $patterns) = @_;
 
     # For the first pass, I don't want to launch any test.
-    return 1 if $self->pass == 1;
+    return 1 if $self->pass == 0;
 
     my $git = QohA::Git->new();
     my $diff_log = $git->diff_log($cnt, $self->path);

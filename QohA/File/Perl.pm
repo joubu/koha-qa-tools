@@ -19,11 +19,6 @@ use QohA::Report;
 our $pc_rc =  dirname( abs_path( $INC{'QohA/File/Perl.pm'} ) ) . '/../../perlcriticrc';
 die "Koha's $pc_rc file is missing..." unless  ( -e  $pc_rc );
 
-has 'pass' => (
-    is => 'rw',
-    default => sub{0},
-);
-
 has 'report' => (
     is => 'rw',
     default => sub {
@@ -31,12 +26,10 @@ has 'report' => (
     },
 );
 
-
 sub run_checks {
     my ($self, $cnt) = @_;
 
     my $r;
-    $self->pass($self->pass + 1);
 
     # Check perl critic
     $r = $self->check_critic();
@@ -57,6 +50,9 @@ sub run_checks {
     # Check spelling
     $r = $self->check_spelling();
     $self->SUPER::add_to_report('spelling', $r);
+
+
+    $self->pass($self->pass + 1);
 }
 
 sub check_critic {
@@ -69,7 +65,7 @@ sub check_critic {
     $conf = "/tmp/$conf";
 
     # If it is the first pass, we have to remove the old configuration file
-    if ( $self->pass == 1 ) {
+    if ( $self->pass == 0 ) {
         qx|rm $conf| if ( -e $conf ) ;
     }
 
