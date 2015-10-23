@@ -70,6 +70,8 @@ eval {
         $modified_files->filter( { extension => [ qw< perl tt xml yaml > ] } ),
         $modified_files->filter( { name => [ qw< sysprefs.sql > ] } ),
         $modified_files->filter( { name => [ qw< kohastructure.sql > ] } ),
+        $modified_files->filter( { name => [ qw< opac.css > ] } ),
+        $modified_files->filter( { name => [ qw< opac.less > ] } ),
     );
 
 

@@ -10,6 +10,7 @@ use QohA::File::Template;
 use QohA::File::YAML;
 use QohA::File::Specific::Sysprefs;
 use QohA::File::Specific::Kohastructure;
+use QohA::File::Specific::OpacCss;
 
 has 'files' => (
     is => 'rw',
@@ -33,6 +34,8 @@ sub BUILD {
             if $file =~ qr/sysprefs\.sql$/;
         push @{ $self->files }, QohA::File::Specific::Kohastructure->new(path => $file)
             if $file =~ qr/kohastructure\.sql$/;
+        push @{ $self->files }, QohA::File::Specific::OpacCss->new(path => $file)
+            if $file =~ qr/opac\.css$|opac\.less$/;
     }
 }
 
