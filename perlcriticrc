@@ -1,3 +1,5 @@
+severity = 5
+include = ProhibitUnusedVariables
 exclude = Miscellanea::RequireRcsKeywords
 
 
