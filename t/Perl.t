@@ -91,6 +91,7 @@ eval {
     our $STATUS_KO = "${RED}FAIL${END}";
     our $STATUS_OK = "${GREEN}OK${END}";
     my $r_v0_expected = <<EOL;
+ $STATUS_KO	perl/Authority.pm
  $STATUS_KO	perl/i_fail_license.pl
  $STATUS_KO	perl/i_fail_spelling.pl
  $STATUS_KO	perl/i_fail_template_name.pl
@@ -111,6 +112,13 @@ eval {
  $STATUS_KO	sql/kohastructure.sql
 EOL
     my $r_v1_expected = <<EOL;
+ $STATUS_KO	perl/Authority.pm
+   $STATUS_OK	  critic
+   $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_OK	  spelling
+   $STATUS_OK	  valid
+
  $STATUS_KO	perl/i_fail_license.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
