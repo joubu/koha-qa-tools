@@ -165,6 +165,7 @@ sub check_forbidden_patterns {
         {pattern => qr{wthdrawn}, error => "wthdrawn should be replaced by withdrawn (see bug 10550)"},
         {pattern => qr{template_name\s*=>.*\.tmpl}, error => "You should not use a .tmpl extension for the template name (see bug 11349)"},
         {pattern => qr{sub type}, error => "Warning: The 'sub type' may be wrong is declared in a Koha::* package (see bug 15446)"},
+        {pattern => qr{Koha::Branches}, error => "Koha::Branches has been removed by bug 15294"},
     );
     push @forbidden_patterns, {pattern => qr{insert\s+into\s+`?systempreferences}i, error => "Use INSERT IGNORE INTO on inserting a new syspref (see bug 9071)"}
         if $self->filename eq 'updatedatabase.pl';
