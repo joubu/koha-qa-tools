@@ -22,7 +22,7 @@ DESCRIPTION
     $ sudo cat ./perl-deps | cpanm
 
 and codespell:
-    $ apt-get install codespell
+    $ sudo apt-get install codespell
 
 3/ run test suite (optional)
     $ cd /path/to/your/qa-test-tools.git
