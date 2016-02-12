@@ -115,7 +115,6 @@ sub check_forbidden_patterns {
         {pattern => qr{jquery.dataTables.min.js}, error => "To include datatables files, please use the include file (see bug 10868)"},
         {pattern => qr{\[% USE ?KohaAuthorisedValues ?%\]}, error => "KohaAuthorisedValues plugin is deprecated (see bug 10626)"},
         {pattern => qr{\[% USE ?KohaBranchName ?%\]}, error => "KohaBranchName plugin is deprecated (see bug 10626)"},
-        {pattern => qr{\s*\|\s*html\s*%]}, error => "The html filter is not needed anymore (see bug 13618)"},
     );
 
     my $errors = $self->SUPER::check_forbidden_patterns($cnt, \@forbidden_patterns);

@@ -3,7 +3,7 @@
   <body>
     <select name="foo">
       [% FOREACH bar IN bar_loop %]
-        [% IF bar.selected | html_line_break %]
+        [% IF bar.selected %]
         <option>bar</option>
       [% END %]
     </select>
