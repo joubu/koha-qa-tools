@@ -92,6 +92,7 @@ eval {
     our $STATUS_OK = "${GREEN}OK${END}";
     my $r_v0_expected = <<EOL;
  $STATUS_KO	perl/Authority.pm
+ $STATUS_OK	perl/i_dont_fail_spelling.pl
  $STATUS_KO	perl/i_fail_license.pl
  $STATUS_KO	perl/i_fail_spelling.pl
  $STATUS_KO	perl/i_fail_template_name.pl
@@ -115,6 +116,13 @@ EOL
  $STATUS_KO	perl/Authority.pm
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_OK	  spelling
+   $STATUS_OK	  valid
+
+ $STATUS_OK	perl/i_dont_fail_spelling.pl
+   $STATUS_OK	  critic
+   $STATUS_OK	  forbidden patterns
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid

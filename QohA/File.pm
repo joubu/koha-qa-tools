@@ -80,6 +80,9 @@ sub check_spelling {
 
     return 0 unless @$full_buf;
 
+    my @exceptions = (
+        qr{isnt\(},
+    );
     # Encapsulate the potential errors
     my @errors;
     my @lines = split /\n/, $full_buf->[0];
@@ -88,10 +91,23 @@ sub check_spelling {
 
         # Remove filepath and line numbers
         # my/file/path:xxx: indentifier  ==> identifier
-        my $re = q|^| . $self->path . q|:\d+:|;
-        $line =~ s|$re||;
-
-        push @errors, $line;
+        my $re = q|^| . $self->path . q|:(\d+):|;
+        if ( $line =~ $re ) {
+            my $line_number = $1;
+            my $p = $self->path;
+            my $guilty_line = `sed -n '${line_number}p' $p`;
+            my $is_an_exception;
+            for my $e ( @exceptions ) {
+                if ( $guilty_line =~ $e ) {
+                    $is_an_exception = 1;
+                    last;
+                }
+            }
+            unless ( $is_an_exception ) {
+                $line =~ s|$re||;
+                push @errors, $line;
+            }
+        }
     }
 
     return @errors
