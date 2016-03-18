@@ -38,18 +38,14 @@ eval {
 
     $CWD = $git_repo;
     my $qoha_git = QohA::Git->new();
-    my $modified_files = QohA::Files->new( { files => $qoha_git->log($num_of_commits) } );
-
+    my $log_files = $qoha_git->log($num_of_commits);
+    my $modified_files = QohA::Files->new( { files => $log_files } );
 
     $qoha_git->delete_branch( 'qa-prev-commit_t' );
     $qoha_git->create_and_change_branch( 'qa-prev-commit_t' );
     $qoha_git->reset_hard_prev( $num_of_commits );
 
-    my @files = (
-        $modified_files->filter( { extension => [ qw< perl tt xml yaml > ] } ),
-        $modified_files->filter( { name => [ qw< sysprefs.sql > ] } ),
-        $modified_files->filter( { name => [ qw< kohastructure.sql > ] } ),
-    );
+    my @files = @{ $modified_files->files };
     for my $f ( @files ) {
         $f->run_checks();
     }
@@ -114,11 +110,13 @@ eval {
 EOL
     my $r_v1_expected = <<EOL;
  $STATUS_KO	i_fail_yaml.yaml
+   $STATUS_OK	  git manipulation
    $STATUS_KO	  yaml_valid
 
  $STATUS_KO	perl/Authority.pm
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
@@ -126,6 +124,7 @@ EOL
  $STATUS_OK	perl/i_dont_fail_spelling.pl
    $STATUS_OK	  critic
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
@@ -133,6 +132,7 @@ EOL
  $STATUS_KO	perl/i_fail_compil.pl
    $STATUS_OK	  critic
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_KO	  valid
@@ -140,6 +140,7 @@ EOL
  $STATUS_KO	perl/i_fail_critic.pl
    $STATUS_KO	  critic
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
@@ -147,6 +148,7 @@ EOL
  $STATUS_KO	perl/i_fail_license.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
@@ -154,6 +156,7 @@ EOL
  $STATUS_KO	perl/i_fail_patterns.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_KO	  valid
@@ -161,6 +164,7 @@ EOL
  $STATUS_KO	perl/i_fail_spelling.pl
    $STATUS_OK	  critic
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_KO	  spelling
    $STATUS_OK	  valid
@@ -168,6 +172,7 @@ EOL
  $STATUS_KO	perl/i_fail_template_name.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
@@ -175,6 +180,7 @@ EOL
  $STATUS_KO	perl/i_fail_unused_declared_variables.pl
    $STATUS_KO	  critic
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
@@ -182,6 +188,7 @@ EOL
  $STATUS_OK	perl/i_m_ok.pl
    $STATUS_OK	  critic
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
@@ -189,48 +196,57 @@ EOL
  $STATUS_KO	perl/updatedatabase.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
  $STATUS_KO	sql/kohastructure.sql
    $STATUS_KO	  charset_collate
+   $STATUS_OK	  git manipulation
 
  $STATUS_KO	sql/sysprefs.sql
+   $STATUS_OK	  git manipulation
    $STATUS_KO	  sysprefs_order
 
  $STATUS_KO	tmpl/i_fail_patterns.tt
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_patterns_theme.tt
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_patterns_tt_plugins.tt
    $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_KO	  valid_template
 
  $STATUS_KO	tmpl/i_fail_tt_valid.tt
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  spelling
    $STATUS_KO	  tt_valid
    $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_valid_template.tt
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_KO	  valid_template
 
  $STATUS_OK	tmpl/i_will_be_correct_tt_valid.tt
    $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  git manipulation
    $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_OK	  valid_template

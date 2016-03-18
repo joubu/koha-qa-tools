@@ -8,16 +8,8 @@ extends 'QohA::File';
 use IPC::Cmd qw[can_run run];
 use File::Spec;
 
-use QohA::Report;
 use C4::TTParser;
 use Template;
-
-has 'report' => (
-    is => 'rw',
-    default => sub {
-        QohA::Report->new( {type => 'template'} );
-    },
-);
 
 sub run_checks {
     my ($self, $cnt) = @_;
@@ -38,7 +30,7 @@ sub run_checks {
     $r = $self->check_spelling();
     $self->SUPER::add_to_report('spelling', $r);
 
-    $self->pass($self->pass + 1);
+    return $self->SUPER::run_checks($cnt);
 }
 
 sub check_tt_valid {

@@ -4,20 +4,14 @@ use Modern::Perl;
 use Moo;
 use YAML;
 
-use QohA::Report;
 extends 'QohA::File';
 
-has 'report' => (
-    is => 'rw',
-    default => sub {
-        QohA::Report->new( {type => 'yaml'} );
-    },
-);
-
 sub run_checks {
-    my ($self) = @_;
+    my ($self, $cnt) = @_;
     my @r = $self->check_parse_yaml();
     $self->SUPER::add_to_report('yaml_valid', \@r);
+
+    return $self->SUPER::run_checks($cnt);
 }
 
 sub check_parse_yaml {

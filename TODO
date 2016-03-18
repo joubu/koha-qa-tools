@@ -1,5 +1,0 @@
-Bugs:
-- When a patch just removes files, the $git->log method does not return the
-right list of files. We don't want to retrieve deleted files so we don't want
-to add the 'D' filter. Maybe should we add a new test for testing this special
-case. (i.e. bug 10459)

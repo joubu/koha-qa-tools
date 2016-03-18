@@ -5,6 +5,7 @@ use Moo;
 use File::Basename;
 use Cwd 'abs_path';
 use IPC::Cmd qw( run );
+use QohA::Report;
 
 has 'path' => (
     is => 'ro',
@@ -28,6 +29,15 @@ has 'pass' => (
     is => 'rw',
     default => sub{0},
 );
+has 'report' => (
+    is => 'rw',
+    default => sub {
+        QohA::Report->new();
+    },
+);
+has 'git_statuses' => (
+    is => 'rw',
+);
 
 sub _build_filename {
     my ($self) = @_;
@@ -40,8 +50,22 @@ sub _build_abspath {
     return $abs_path;
 }
 
+sub run_checks {
+    my ($self, $cnt) = @_;
+
+    my $r;
+
+    # Check git manipulations
+    $r = $self->check_git_manipulation();
+    $self->add_to_report('git manipulation', $r);
+
+    $self->pass($self->pass + 1);
+}
+
 sub check_forbidden_patterns {
     my ($self, $cnt, $patterns) = @_;
+
+    return 0 unless -e $self->path;
 
     # For the first pass, I don't want to launch any test.
     return 1 if $self->pass == 0;
@@ -108,6 +132,22 @@ sub check_spelling {
                 push @errors, $line;
             }
         }
+    }
+
+    return @errors
+      ? \@errors
+      : 1;
+}
+
+sub check_git_manipulation {
+    my ($self) = @_;
+
+    return 1 if $self->pass == 0;
+
+    my @errors;
+
+    if ( $self->{git_statuses} =~ m|A| and $self->{git_statuses} =~ m|D| ) {
+        push @errors, "The file has been added and deleted in the same patchset";
     }
 
     return @errors

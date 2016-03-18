@@ -4,9 +4,6 @@ use Modern::Perl;
 use Moo;
 use List::Compare;
 
-has 'type' => (
-    is => 'ro',
-);
 has 'file' => (
     is => 'rw',
 );

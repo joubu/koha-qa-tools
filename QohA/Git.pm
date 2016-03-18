@@ -11,24 +11,22 @@ has 'branchname' => (
 );
 
 # this sub returns all modified files, for testing on
-# and ignores deleted or moved files
 sub log {
     my ($self, $cnt) = @_;
 
-    #skip deleted files..
-    my @r = qx{git log --oneline --numstat  --diff-filter='ACMRTUXB' -$cnt};
-    my @r1;
+    my @r = qx{git log --oneline --name-status -$cnt};
+    my $files = {};
 
-    # oops, lets strip out deleted or moved files, from selection
     foreach my $rr ( @r ) {
         chomp $rr;
         my @cols = split '\t', $rr ;
 
         # ignore lines that are commit shas, not filename
-        next if not defined $cols[2];
-        push @r1, $cols[2];
+        next if not defined $cols[1];
+        $files->{$cols[1]} .= $cols[0];
     }
-    return \@r1 ;
+
+    return [ map { { filepath => $_, statuses => $files->{$_} } } keys %$files ];
 }
 
 sub diff_log {

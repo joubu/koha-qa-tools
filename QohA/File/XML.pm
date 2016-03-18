@@ -4,20 +4,14 @@ use Modern::Perl;
 use Moo;
 use XML::LibXML;
 
-use QohA::Report;
 extends 'QohA::File';
 
-has 'report' => (
-    is => 'rw',
-    default => sub {
-        QohA::Report->new( {type => 'xml'} );
-    },
-);
-
 sub run_checks {
-    my ($self) = @_;
+    my ($self, $cnt) = @_;
     my @r = $self->check_parse_xml();
     $self->SUPER::add_to_report('xml_valid', \@r);
+
+    return $self->SUPER::run_checks($cnt);
 }
 
 sub check_parse_xml {

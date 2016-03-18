@@ -13,18 +13,10 @@ use IPC::Cmd qw[can_run run];
 use Cwd qw( abs_path );
 
 use QohA::Git;
-use QohA::Report;
 
 
 our $pc_rc =  dirname( abs_path( $INC{'QohA/File/Perl.pm'} ) ) . '/../../perlcriticrc';
 die "Koha's $pc_rc file is missing..." unless  ( -e  $pc_rc );
-
-has 'report' => (
-    is => 'rw',
-    default => sub {
-        QohA::Report->new( {type => 'perl'} );
-    },
-);
 
 sub run_checks {
     my ($self, $cnt) = @_;
@@ -51,8 +43,7 @@ sub run_checks {
     $r = $self->check_spelling();
     $self->SUPER::add_to_report('spelling', $r);
 
-
-    $self->pass($self->pass + 1);
+    return $self->SUPER::run_checks($cnt);
 }
 
 sub check_critic {

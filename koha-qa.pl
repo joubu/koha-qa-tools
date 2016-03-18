@@ -60,21 +60,14 @@ eval {
 
     print QohA::Git::log_as_string($num_of_commits);
 
-    my $modified_files = QohA::Files->new( { files => $git->log($num_of_commits) } );
+    my $log_files = $git->log($num_of_commits);
+    my $modified_files = QohA::Files->new( { files => $log_files } );
 
     $git->delete_branch( 'qa-prev-commit' );
     $git->create_and_change_branch( 'qa-prev-commit' );
     $git->reset_hard_prev( $num_of_commits );
 
-    my @files = (
-        $modified_files->filter( { extension => [ qw< perl tt xml yaml > ] } ),
-        $modified_files->filter( { name => [ qw< sysprefs.sql > ] } ),
-        $modified_files->filter( { name => [ qw< kohastructure.sql > ] } ),
-        $modified_files->filter( { name => [ qw< opac.css > ] } ),
-        $modified_files->filter( { name => [ qw< opac.less > ] } ),
-    );
-
-
+    my @files = @{ $modified_files->files };
     my $i = 1;
     say "Processing files before patches";
     for my $f ( @files ) {

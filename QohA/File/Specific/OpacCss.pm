@@ -5,20 +5,14 @@ use Moo;
 use IPC::Cmd qw[run];
 use File::Basename;
 use File::Temp qw[tempfile];
-use QohA::Report;
 extends 'QohA::File';
 
-has 'report' => (
-    is => 'rw',
-    default => sub {
-        QohA::Report->new( {type => 'specific'} );
-    },
-);
-
 sub run_checks {
-    my ($self) = @_;
+    my ($self, $cnt) = @_;
     my @r = $self->check_css_less_sync();
     $self->SUPER::add_to_report('css_and_less_in_sync', \@r);
+
+    return $self->SUPER::run_checks($cnt);
 }
 
 sub check_css_less_sync {

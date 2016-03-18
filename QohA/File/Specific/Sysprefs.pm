@@ -2,20 +2,14 @@ package QohA::File::Specific::Sysprefs;
 
 use Modern::Perl;
 use Moo;
-use QohA::Report;
 extends 'QohA::File';
 
-has 'report' => (
-    is => 'rw',
-    default => sub {
-        QohA::Report->new( {type => 'specific'} );
-    },
-);
-
 sub run_checks {
-    my ($self) = @_;
+    my ($self, $cnt) = @_;
     my @r = $self->check_sysprefs_order();
     $self->SUPER::add_to_report('sysprefs_order', \@r);
+
+    return $self->SUPER::run_checks($cnt);
 }
 
 sub check_sysprefs_order {
