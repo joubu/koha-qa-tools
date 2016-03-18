@@ -91,28 +91,31 @@ eval {
     our $STATUS_KO = "${RED}FAIL${END}";
     our $STATUS_OK = "${GREEN}OK${END}";
     my $r_v0_expected = <<EOL;
+ $STATUS_KO	i_fail_yaml.yaml
  $STATUS_KO	perl/Authority.pm
  $STATUS_OK	perl/i_dont_fail_spelling.pl
+ $STATUS_KO	perl/i_fail_compil.pl
+ $STATUS_KO	perl/i_fail_critic.pl
  $STATUS_KO	perl/i_fail_license.pl
+ $STATUS_KO	perl/i_fail_patterns.pl
  $STATUS_KO	perl/i_fail_spelling.pl
  $STATUS_KO	perl/i_fail_template_name.pl
  $STATUS_KO	perl/i_fail_unused_declared_variables.pl
- $STATUS_KO	perl/updatedatabase.pl
- $STATUS_KO	perl/i_fail_patterns.pl
- $STATUS_KO	perl/i_fail_compil.pl
- $STATUS_KO	perl/i_fail_critic.pl
  $STATUS_OK	perl/i_m_ok.pl
+ $STATUS_KO	perl/updatedatabase.pl
+ $STATUS_KO	sql/kohastructure.sql
+ $STATUS_KO	sql/sysprefs.sql
+ $STATUS_KO	tmpl/i_fail_patterns.tt
  $STATUS_KO	tmpl/i_fail_patterns_theme.tt
  $STATUS_KO	tmpl/i_fail_patterns_tt_plugins.tt
- $STATUS_KO	tmpl/i_fail_patterns.tt
  $STATUS_KO	tmpl/i_fail_tt_valid.tt
  $STATUS_KO	tmpl/i_fail_valid_template.tt
  $STATUS_OK	tmpl/i_will_be_correct_tt_valid.tt
- $STATUS_KO	i_fail_yaml.yaml
- $STATUS_KO	sql/sysprefs.sql
- $STATUS_KO	sql/kohastructure.sql
 EOL
     my $r_v1_expected = <<EOL;
+ $STATUS_KO	i_fail_yaml.yaml
+   $STATUS_KO	  yaml_valid
+
  $STATUS_KO	perl/Authority.pm
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
@@ -127,12 +130,33 @@ EOL
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
+ $STATUS_KO	perl/i_fail_compil.pl
+   $STATUS_OK	  critic
+   $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_OK	  spelling
+   $STATUS_KO	  valid
+
+ $STATUS_KO	perl/i_fail_critic.pl
+   $STATUS_KO	  critic
+   $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_OK	  spelling
+   $STATUS_OK	  valid
+
  $STATUS_KO	perl/i_fail_license.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
    $STATUS_OK	  pod
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
+
+ $STATUS_KO	perl/i_fail_patterns.pl
+   $STATUS_OK	  critic
+   $STATUS_KO	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_OK	  spelling
+   $STATUS_KO	  valid
 
  $STATUS_KO	perl/i_fail_spelling.pl
    $STATUS_OK	  critic
@@ -155,6 +179,13 @@ EOL
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
+ $STATUS_OK	perl/i_m_ok.pl
+   $STATUS_OK	  critic
+   $STATUS_OK	  forbidden patterns
+   $STATUS_OK	  pod
+   $STATUS_OK	  spelling
+   $STATUS_OK	  valid
+
  $STATUS_KO	perl/updatedatabase.pl
    $STATUS_OK	  critic
    $STATUS_KO	  forbidden patterns
@@ -162,33 +193,17 @@ EOL
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
- $STATUS_KO	perl/i_fail_patterns.pl
-   $STATUS_OK	  critic
+ $STATUS_KO	sql/kohastructure.sql
+   $STATUS_KO	  charset_collate
+
+ $STATUS_KO	sql/sysprefs.sql
+   $STATUS_KO	  sysprefs_order
+
+ $STATUS_KO	tmpl/i_fail_patterns.tt
    $STATUS_KO	  forbidden patterns
-   $STATUS_OK	  pod
    $STATUS_OK	  spelling
-   $STATUS_KO	  valid
-
- $STATUS_KO	perl/i_fail_compil.pl
-   $STATUS_OK	  critic
-   $STATUS_OK	  forbidden patterns
-   $STATUS_OK	  pod
-   $STATUS_OK	  spelling
-   $STATUS_KO	  valid
-
- $STATUS_KO	perl/i_fail_critic.pl
-   $STATUS_KO	  critic
-   $STATUS_OK	  forbidden patterns
-   $STATUS_OK	  pod
-   $STATUS_OK	  spelling
-   $STATUS_OK	  valid
-
- $STATUS_OK	perl/i_m_ok.pl
-   $STATUS_OK	  critic
-   $STATUS_OK	  forbidden patterns
-   $STATUS_OK	  pod
-   $STATUS_OK	  spelling
-   $STATUS_OK	  valid
+   $STATUS_OK	  tt_valid
+   $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_patterns_theme.tt
    $STATUS_KO	  forbidden patterns
@@ -201,12 +216,6 @@ EOL
    $STATUS_OK	  spelling
    $STATUS_OK	  tt_valid
    $STATUS_KO	  valid_template
-
- $STATUS_KO	tmpl/i_fail_patterns.tt
-   $STATUS_KO	  forbidden patterns
-   $STATUS_OK	  spelling
-   $STATUS_OK	  tt_valid
-   $STATUS_OK	  valid_template
 
  $STATUS_KO	tmpl/i_fail_tt_valid.tt
    $STATUS_OK	  forbidden patterns
@@ -226,19 +235,10 @@ EOL
    $STATUS_OK	  tt_valid
    $STATUS_OK	  valid_template
 
- $STATUS_KO	i_fail_yaml.yaml
-   $STATUS_KO	  yaml_valid
-
- $STATUS_KO	sql/sysprefs.sql
-   $STATUS_KO	  sysprefs_order
-
- $STATUS_KO	sql/kohastructure.sql
-   $STATUS_KO	  charset_collate
-
 EOL
 
     my ( $r_v0, $r_v1 );
-    for my $f ( @files ) {
+    for my $f ( sort { $a->path cmp $b->path } @files ) {
         $r_v0 .= $f->report->to_string({verbosity => 0})."\n";
         $r_v1 .= $f->report->to_string({verbosity => 1})."\n";
     }

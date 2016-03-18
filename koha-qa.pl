@@ -99,7 +99,7 @@ eval {
     }
     say "\n" unless $no_progress;
 
-    for my $f (@files) {
+    for my $f ( sort { $a->path cmp $b->path } @files ) {
         say $f->report->to_string(
             {
                 verbosity => $v,
