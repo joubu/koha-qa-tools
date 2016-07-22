@@ -136,6 +136,12 @@ sub check_valid {
 # added exception to 'Subroutine $FOO redefined' warnings
     s/^Subroutine .* redefined $// for @errors;
 
+    # Remove "used only once: possible typo" known warnings
+    # This is a temporary fix, waiting for a better fix on bug 16104
+    s/^Name "Cache::RemovalStrategy::FIELDS" used only once: possible typo // for @errors;
+    s/^Name "Cache::RemovalStrategy::LRU::FIELDS" used only once: possible typo // for @errors;
+    s/^Name "Tie::Hash::FIELDS" used only once: possible typo // for @errors;
+
     @errors = grep {!/^$/} @errors;
     return \@errors;
 }
