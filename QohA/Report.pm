@@ -78,7 +78,7 @@ sub to_string {
             }
         }
         $v1 .= "\n   " . $task_status ."\t  $name";
-        if ( $verbosity >= 2 ) {
+        if ( $verbosity >= 2 and @diff_ko ) {
             $v1 .= "\n\t\t$_" for @diff;
         }
     }
