@@ -107,6 +107,9 @@ sub check_forbidden_patterns {
         {pattern => qr{jquery.dataTables.min.js}, error => "To include datatables files, please use the include file (see bug 10868)"},
         {pattern => qr{\[% USE ?KohaAuthorisedValues ?%\]}, error => "KohaAuthorisedValues plugin is deprecated (see bug 10626)"},
         {pattern => qr{\[% USE ?KohaBranchName ?%\]}, error => "KohaBranchName plugin is deprecated (see bug 10626)"},
+        {pattern => qr{"btn btn-small}, error => "Contains old bootstrap style for buttons (see bug 16239)"},
+        {pattern => qr{"btn btn-mini},  error => "Contains old bootstrap style for buttons (see bug 16239)"},
+        {pattern => qr{"modal hide"},   error => "Contains old bootstrap style for buttons (see bug 16239)"},
     );
 
     my $errors = $self->SUPER::check_forbidden_patterns($cnt, \@forbidden_patterns);
