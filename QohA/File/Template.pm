@@ -110,6 +110,8 @@ sub check_forbidden_patterns {
         {pattern => qr{"btn btn-small}, error => "Contains old bootstrap style for buttons (see bug 16239)"},
         {pattern => qr{"btn btn-mini},  error => "Contains old bootstrap style for buttons (see bug 16239)"},
         {pattern => qr{"modal hide"},   error => "Contains old bootstrap style for buttons (see bug 16239)"},
+        {pattern => qr{(^|\s)(h|H)e(\s|$)}, error => "Do not assume male gender, use they/them instead (bug 18432)"},
+        {pattern => qr{(^|\s)(h|H)is(\s|$)}, error => "Do not assume male gender, use they/them instead (bug 18432)"},
     );
 
     my $errors = $self->SUPER::check_forbidden_patterns($cnt, \@forbidden_patterns);

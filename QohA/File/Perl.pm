@@ -164,6 +164,8 @@ sub check_forbidden_patterns {
         {pattern => qr{sub type}, error => "Warning: The 'sub type' may be wrong is declared in a Koha::* package (see bug 15446)"},
         {pattern => qr{Koha::Branches}, error => "Koha::Branches has been removed by bug 15294"},
         {pattern => qr{Koha::Borrower}, error => "Koha::Borrower has been moved by bug 15548"},
+        {pattern => qr{(^|\s)(h|H)e(\s|$)}, error => "Do not assume male gender, use they/them instead (bug 18432)"},
+        {pattern => qr{(^|\s)(h|H)is(\s|$)}, error => "Do not assume male gender, use they/them instead (bug 18432)"},
     );
     push @forbidden_patterns, {pattern => qr{insert\s+into\s+`?systempreferences}i, error => "Use INSERT IGNORE INTO on inserting a new syspref (see bug 9071)"}
         if $self->filename eq 'updatedatabase.pl';
