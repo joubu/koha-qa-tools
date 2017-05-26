@@ -112,6 +112,7 @@ sub check_forbidden_patterns {
         {pattern => qr{"modal hide"},   error => "Contains old bootstrap style for buttons (see bug 16239)"},
         {pattern => qr{(^|\s)(h|H)e(\s|$)}, error => "Do not assume male gender, use they/them instead (bug 18432)"},
         {pattern => qr{(^|\s)(h|H)is(\s|$)}, error => "Do not assume male gender, use they/them instead (bug 18432)"},
+        {pattern => qr{\[\%[^\%\]]*$}, error => "Do not use line breaks inside template tags (bug 18675)"},
     );
 
     my $errors = $self->SUPER::check_forbidden_patterns($cnt, \@forbidden_patterns);
