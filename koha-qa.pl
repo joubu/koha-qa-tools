@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-our ($v, $d, $c, $nocolor, $help, $no_progress);
+our ($v, $d, $c, $nocolor, $help, $no_progress, $failures_only);
 
 BEGIN {
     use Getopt::Long;
@@ -8,12 +8,13 @@ BEGIN {
     $ENV{'Smart_Comments'}  = 0;
 
     our $r = GetOptions(
-        'v:s' => \$v,
-        'c:s' => \$c,
-        'd' => \$d,
+        'v:s'         => \$v,
+        'c:s'         => \$c,
+        'd'           => \$d,
         'no-progress' => \$no_progress,
-        'nocolor' => \$nocolor,
-        'h|help' => \$help,
+        'nocolor'     => \$nocolor,
+        '--failures'  => \$failures_only,
+        'h|help'      => \$help,
     );
     pod2usage(1) if $help or not $c;
 
@@ -98,6 +99,7 @@ eval {
                 verbosity => $v,
                 color     => not( $nocolor ),
                 skip      => \@tests_to_skip,
+                failures_only => $failures_only,
             }
         );
     }
@@ -128,7 +130,7 @@ koha-qa.pl
 
 =head1 SYNOPSIS
 
-koha-qa.pl -c NUMBER_OF_COMMITS [-v VERBOSITY_VALUE] [-d] [--nocolor] [-h]
+koha-qa.pl -c NUMBER_OF_COMMITS [-v VERBOSITY_VALUE] [-d] [--failures] [--nocolor] [-h]
 
 
 =head1 DESCRIPTION
@@ -159,6 +161,10 @@ Number of commit to test from HEAD
 =item B<-d>
 
 Debug mode
+
+=item B<--failures>
+
+Only display failures.
 
 =item B<--nocolor>
 

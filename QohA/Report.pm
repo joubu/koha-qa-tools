@@ -35,6 +35,7 @@ sub to_string {
     my $color     = $params->{color} // 1;
     my $task_name = $params->{name};
     my $skip      = $params->{skip} // [];
+    my $failures_only = $params->{failures_only} // 0;
 
     my $STATUS_KO = $color
         ? "${RED}FAIL${END}"
@@ -58,7 +59,7 @@ sub to_string {
 
     for my $name ( sort keys %$tasks ) {
         if ( grep {/^$name$/} @$skip ) {
-            $v1 .= "\n   " . $STATUS_SKIPPED ."\t  $name";
+            $v1 .= "\n   " . $STATUS_SKIPPED ."\t  $name" unless $failures_only;
             next;
         }
         my $results = $tasks->{$name};
@@ -77,7 +78,7 @@ sub to_string {
                 $task_status = $STATUS_KO;
             }
         }
-        $v1 .= "\n   " . $task_status ."\t  $name";
+        $v1 .= "\n   " . $task_status ."\t  $name" if $task_status eq $STATUS_KO or not $failures_only;
         if ( $verbosity >= 2 and @diff_ko ) {
             $v1 .= "\n\t\t$_" for @diff;
         }
@@ -88,7 +89,7 @@ sub to_string {
         ? $STATUS_KO
         : $STATUS_OK;
     my $s = " $status\t" .  $self->file->path;
-    $s .= $v1 if $verbosity >= 1;
+    $s .= $v1 if $verbosity >= 1 and $status eq $STATUS_KO or not $failures_only;
 
     return $s;
 }
