@@ -9,6 +9,7 @@ extends 'QohA::File';
 
 use Test::Perl::Critic::Progressive(':all');
 use Perl::Critic qw[critique];
+use Pod::Coverage;
 use IPC::Cmd qw[can_run run];
 use Cwd qw( abs_path );
 
@@ -34,6 +35,12 @@ sub run_checks {
     # Check pod (Pod::Checker)
     $r = $self->check_pod();
     $self->SUPER::add_to_report('pod', $r);
+
+    # Check pod coverage (Pod::Coverage)
+    if ( $self->path =~ qr/\.pm$/ ) {
+        $r = $self->check_pod_coverage();
+        $self->SUPER::add_to_report('pod coverage', $r);
+    }
 
     # Check patterns
     $r = $self->check_forbidden_patterns($cnt);
@@ -197,6 +204,38 @@ sub check_pod {
     return @errors
         ? \@errors
         : 0;
+}
+
+sub check_pod_coverage {
+    my ($self) = @_;
+
+    # If the module has been removed
+    unless ( -e $self->path ) {
+        return {
+            rating => 1, subs => [],
+        }
+    }
+
+    my $package_name = $self->path;
+    $package_name =~ s|/|::|g;
+    $package_name =~ s|\.pm$||;
+
+    # Using Pod::Coverage from here will not work
+    # the module will not be reloaded
+    # Could be done with delete $INC{$self->path}, but get subroutine redefined warnings
+    my $cmd = qq{
+        perl -MPod::Coverage=$package_name -e666
+    };
+
+    my ( $success, $error_code, $full_buf, $stdout_buf, $stderr_buf ) =
+      run( command => $cmd, verbose => 0 );
+
+    my ( $rating, $subs ) = split '\\n', $stdout_buf->[0];
+    $rating =~ s|^.*rating of ||;
+    $subs =~ s|^The following are uncovered: ||;
+    $subs =~ s| is uncovered$||;
+    my @subs = split ', ', $subs;
+    return { rating => $rating, subs => \@subs };
 }
 
 1;

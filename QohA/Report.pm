@@ -62,8 +62,23 @@ sub to_string {
             $v1 .= "\n   " . $STATUS_SKIPPED ."\t  $name" unless $failures_only;
             next;
         }
+
         my $results = $tasks->{$name};
-        my @diff = $self->diff($results);
+        my @diff;
+        if ( $name eq 'pod coverage' ) {
+            my $before = $results->[0];
+            my $after = $results->[1];
+            my %subs_before = map {$_ => 1} @{ $before->{subs} };
+            @diff  = grep {not $subs_before{$_}} @{ $after->{subs} };
+            if ( @diff ) {
+                @diff = map {"POD is missing for $_"} @diff;
+            } elsif ( $before->{rating} > $after->{rating} ) {
+                # Not sure we can reach this
+                @diff = ('Test coverage was greater before');
+            }
+        } else {
+            @diff = $self->diff($results);
+        }
 
         my $task_status = $STATUS_OK;
         my @diff_ko;
