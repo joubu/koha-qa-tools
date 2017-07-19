@@ -231,6 +231,9 @@ sub check_pod_coverage {
       run( command => $cmd, verbose => 0 );
 
     my ( $rating, $subs ) = split '\\n', $stdout_buf->[0];
+    if ( $rating =~ m|unrated| ) {
+        $rating = 0;
+    }
     $rating =~ s|^.*rating of ||;
     $subs =~ s|^The following are uncovered: ||;
     $subs =~ s| is uncovered$||;
