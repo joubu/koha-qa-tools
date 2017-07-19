@@ -74,7 +74,7 @@ sub to_string {
                 @diff = map {"POD is missing for $_"} @diff;
             } elsif ( $before->{rating} > $after->{rating} ) {
                 # Not sure we can reach this
-                @diff = ('Test coverage was greater before');
+                @diff = ('POD coverage was greater before, try perl -MPod::Coverage=PackageName -e666');
             }
         } else {
             @diff = $self->diff($results);
