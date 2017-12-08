@@ -26,7 +26,7 @@ sub BUILD {
         my $file;
         if ( $filepath =~ qr/\.xml$|\.xsl$|\.xslt$/i ) {
             $file = QohA::File::XML->new(path => $filepath);
-        } elsif ( $filepath =~ qr/\.pl$|\.pm$|\.t$/i ) {
+        } elsif ( $filepath =~ qr/\.pl$|\.pm$|\.t$|svc|unapi$/i ) {
             $file = QohA::File::Perl->new(path => $filepath);
         } elsif ( $filepath =~ qr/\.tt$|\.inc$/i ) {
             $file = QohA::File::Template->new(path => $filepath);
