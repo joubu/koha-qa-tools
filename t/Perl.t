@@ -207,6 +207,7 @@ EOL
 
  $STATUS_KO	sql/sysprefs.sql
    $STATUS_OK	  git manipulation
+   $STATUS_KO	  semicolon
    $STATUS_KO	  sysprefs_order
 
  $STATUS_KO	tmpl/i_fail_patterns.tt
