@@ -1,6 +1,6 @@
 package Authority;
 use Modern::Perl;
-use Koha::Database;
+#use Koha::Database;
 #use base qw(Koha::Object);
 
 sub type {
