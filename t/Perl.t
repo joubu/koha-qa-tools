@@ -118,6 +118,7 @@ EOL
    $STATUS_KO	  forbidden patterns
    $STATUS_OK	  git manipulation
    $STATUS_OK	  pod
+   $STATUS_KO	  pod coverage
    $STATUS_OK	  spelling
    $STATUS_OK	  valid
 
