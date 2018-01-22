@@ -104,7 +104,7 @@ sub to_string {
         ? $STATUS_KO
         : $STATUS_OK;
     my $s = " $status\t" .  $self->file->path;
-    $s .= $v1 if $verbosity >= 1 and $status eq $STATUS_KO or not $failures_only;
+    $s .= $v1 if $verbosity >= 1 and ( $status eq $STATUS_KO or not $failures_only );
 
     return $s;
 }
